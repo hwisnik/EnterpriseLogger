@@ -685,7 +685,7 @@ Author: Roger Knapp
   <xs:simpleType name="connectionTypeTypes">
     <xs:restriction base="xs:string">
       <xs:enumeration value="System.Data.OleDb.OleDbConnection, System.Data"/>
-      <xs:enumeration value="System.Data.SqlClient.SqlConnection, System.Data"/>
+      <xs:enumeration value="System.Data.SqlClient.SqlConnection, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
       <xs:enumeration value="Microsoft.Data.Odbc.OdbcConnection, Microsoft.Data.Odbc"/>
       <xs:enumeration value="System.Data.OracleClient.OracleConnection, System.Data.OracleClient"/>
       <xs:enumeration value="MySql.Data.MySqlClient.MySqlConnection, MySql.Data"/>

@@ -1,6 +1,7 @@
-﻿using System;
-using EnterpriseLogger;
+﻿using EnterpriseLogger;
 using log4net;
+using System;
+
 
 namespace LoggerTest
 {
@@ -9,25 +10,51 @@ namespace LoggerTest
 
         static void Main(string[] args)
         {
+            //Initialize Logger at startup
+            var loggingInstance = EntLogger.Initialize();
             var logger = new LoggerTest();
-            logger.Logit();
+            logger.Logit(loggingInstance);
         }
-
-
 
         public class LoggerTest
         {
-            private readonly ILog _log = EntLogger.LoggingInstance;
-            public void Logit()
+
+            //Note that loggInstance is injected as a dependency of Logit          
+            public void Logit(ILog loggingInstance)
             {
+                EntLogger.LogDebug(loggingInstance, "Entering LogIt");
                 try
                 {
-                    throw new Exception("Test Message Text",new Exception("Inner Exception Text"));
+                    throw new Exception("Test Message Text", new Exception("Inner Exception Text"));
                 }
                 catch (Exception ex)
                 {
-                    _log.Error(ex.Message,ex);
+                    EntLogger.LogException(loggingInstance,ex.Message, ex);
                 }
+
+                EntLogger.LogDebug(loggingInstance,"Exiting LogIt");
+
+                ChildClass childClass = new ChildClass();
+                childClass.LoggingFromChildClass(loggingInstance);
+            }
+        }
+
+        public class ChildClass 
+        {
+            //Note that loggInstance is injected as a dependency of LoggingFromChildClass 
+            public void LoggingFromChildClass(ILog loggingInstance)
+            {
+                EntLogger.LogDebug(loggingInstance, "Entering LoggingFromChildClass");
+                try
+                {
+                    throw new Exception("Test Message Text", new Exception("ChildClass Exception"));
+                }
+                catch (Exception ex)
+                {
+                    EntLogger.LogException(loggingInstance, ex.Message, ex);
+                }
+
+                EntLogger.LogDebug(loggingInstance, "Exiting LoggingFromChildClass");
             }
         }
     }
